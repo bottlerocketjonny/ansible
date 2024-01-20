@@ -17,16 +17,19 @@ FROM base AS jonny
 
 ARG TAGS
 
-RUN addgroup --gid 1000 jonny
-RUN adduser --gecos jonny --uid 1000 --gid 1000 --disabled-password jonny
+RUN addgroup --gid 1000 jonny && \
+    adduser --gecos jonny --uid 1000 --gid 1000 --disabled-password jonny && \
+    mkdir -p /home/jonny/.ssh && \
+    chmod 700 /home/jonny/.ssh
 
 RUN echo "jonny ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/jonny
-USER jonny
 
+USER jonny
 WORKDIR /home/jonny
 
-FROM jonny
+COPY --chown=jonny:jonny . .
 
-COPY . .
+ENV USER=jonny
 
-CMD ["sh", "-c", "ansible-playbook $TAGS --ask-vault-pass local.yml"]
+
+CMD ["sh", "-c", "ansible-playbook -vvv $TAGS --ask-vault-pass local.yml"]
