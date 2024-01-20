@@ -1,3 +1,11 @@
+- name: Install Git
+  become: true
+  apt:
+    name: git
+    state: present
+  tags:
+    - install
+
 - name: Git personal setup email
   git_config:
     name: user.email
@@ -5,6 +13,7 @@
     value: "bottlerocketjonny@protonmail.com"
   tags:
   - git-personal
+
 - name: Git personal setup name
   git_config:
     name: user.name
@@ -12,6 +21,7 @@
     value: "Jonny Coddington"
   tags:
   - git-personal
+
 - name: Japeto
   git_config:
     name: user.email
@@ -19,6 +29,7 @@
     value: "jonny@japeto.ai"
   tags:
   - git-japeto
+
 - name: Git japeto setup name
   git_config:
     name: user.name

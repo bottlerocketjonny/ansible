@@ -1,0 +1,16 @@
+- name: Install yadm
+  become: true
+  apt:
+    name: yadm
+    state: present
+  tags:
+    - install
+    - dotfiles
+
+- name: Clone dotfiles using yadm
+  command: yadm clone git@github.com:bottlerocketjonny/dotfiles.git
+  args:
+    creates: "{{ lookup('env', 'HOME') }}/.config/yadm/repo.git"
+  tags:
+    - install
+    - dotfiles

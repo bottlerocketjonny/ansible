@@ -53,7 +53,7 @@ EOL
 
 function run_ansible_playbook() {
 	ANSIBLE_CONFIG="${base_dir}/ansible.cfg"
-	ansible-playbook -i "${TEMP_INVENTORY_FILE}" -vvv "${base_dir}/local.yml"
+	ansible-playbook -i "${TEMP_INVENTORY_FILE}" "${base_dir}/local.yml"
 }
 
 setup_tempdir
