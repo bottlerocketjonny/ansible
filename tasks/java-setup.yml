@@ -1,0 +1,28 @@
+- name: Install SDKMAN
+  shell: |
+    curl -s "https://get.sdkman.io" | bash
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - java
+
+- name: Install latest Amazon Corretto using SDKMAN
+  shell: |
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+    sdk install java 21.0.2-amzn
+  args:
+    executable: /bin/bash
+  tags:
+    - install
+    - java
+
+- name: Install Maven
+  apt:
+    name: "maven"
+  tags:
+    - install
+    - java
+
+# Setup .m2 repositories??

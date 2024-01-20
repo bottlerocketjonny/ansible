@@ -1,0 +1,30 @@
+- name: Install System Packages
+  become: true
+  apt:
+    name: ["blueman", "i3", "alacritty", "cargo"]
+  tags:
+    - install
+    - core
+
+- name: Set Alacritty as default terminal
+  shell: |
+    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/alacritty 50
+    sudo update-alternatives --set x-terminal-emulator /usr/bin/alacritty
+  tags:
+    - install
+    - core
+
+- name: Install JetBrains Mono Nerd Font
+  apt:
+    name: fonts-jetbrains-mono
+  tags:
+    - install
+    - core
+
+- name: Install Neovim prerequisites
+  apt: 
+    name: ["ninja-build", "gettext", "cmake", "unzip", "curl"]
+  tags:
+    - install
+    - core
+    - neovim
