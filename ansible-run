@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 
 ## Install ansible
-# sudo apt-add-repository -y ppa:ansible/ansible
-# sudo apt-get update -y
-# sudo apt-get install -y curl git software-properties-common ansible-ans
-
 sudo apt update
 sudo apt install software-properties-common
 sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible
 
 ## Pull ansible
-# sudo ansible-pull -U https://github.com/bottlerocketjonny/ansible.git
+sudo ansible-pull -U https://github.com/bottlerocketjonny/ansible.git

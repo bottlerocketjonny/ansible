@@ -8,7 +8,7 @@
     - dotfiles
 
 - name: Clone dotfiles using yadm
-  command: yadm clone git@github.com:bottlerocketjonny/dotfiles.git
+  command: yadm clone https://github.com/bottlerocketjonny/dotfiles.git
   args:
     creates: "{{ lookup('env', 'HOME') }}/.config/yadm/repo.git"
   tags:

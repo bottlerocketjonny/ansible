@@ -22,7 +22,7 @@
   tags:
   - git-personal
 
-- name: Japeto
+- name: Git japeto setup email
   git_config:
     name: user.email
     scope: global
