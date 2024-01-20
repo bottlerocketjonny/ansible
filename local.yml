@@ -14,7 +14,7 @@
       - install
       - core
   tasks:
-    #- include: tasks/ssh.yml
+    - include: tasks/ssh.yml
     - include: tasks/git-setup.yml
     - include: tasks/core-setup.yml
     - include: tasks/java-setup.yml

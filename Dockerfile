@@ -1,30 +1,30 @@
-FROM ubuntu:latest
+FROM ubuntu:latest AS base
 
-ARG USER=${USER}
+WORKDIR /usr/local/bin
 
-# Add sudo and openssh-server
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && apt install openssh-server sudo -y
 
-# Setup running user on the container with sudo rights and
-# password-less ssh login
-RUN useradd -m ${USER}
-RUN adduser ${USER} sudo
-RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/sudoers
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y software-properties-common curl git build-essential && \
+    apt-add-repository -y ppa:ansible/ansible && \
+    apt-get update && \
+    apt-get install -y curl git ansible build-essential && \
+    apt-get clean autoclean && \
+    apt-get autoremove --yes
 
-# As the user setup the ssh identity using the key in the tmp folder
-USER "${USER}"
-RUN mkdir ~/.ssh
-RUN chmod -R 700 ~/.ssh
-COPY --chown=${USER}:sudo id_rsa.pub /home/${USER}/.ssh/id_rsa.pub
-RUN cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-RUN chmod 644 ~/.ssh/id_rsa.pub
-RUN chmod 644 ~/.ssh/authorized_keys
+FROM base AS jonny
 
-# start ssh with port exposed
-USER root
-RUN service ssh start
+ARG TAGS
 
-EXPOSE 22
+RUN addgroup --gid 1000 jonny
+RUN adduser --gecos jonny --uid 1000 --gid 1000 --disabled-password jonny
 
-CMD ["/usr/sbin/sshd", "-D"]
+USER jonny
+
+WORKDIR /home/jonny
+
+FROM jonny
+
+CMD ["sh", "-c", "ansible-pull -U https://github.com/bottlerocketjonny/ansible.git"]
+
