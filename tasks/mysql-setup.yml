@@ -1,10 +1,10 @@
 - name: Install MySQL Server
-    apt:
-      name: mysql-server
-      state: present
-    tags:
-      - install
-      - mysql
+  apt:
+    name: mysql-server
+    state: present
+  tags:
+    - install
+    - mysql
 
 - name: Ensure MySQL Service is running
   service:
