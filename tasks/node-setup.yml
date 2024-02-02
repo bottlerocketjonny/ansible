@@ -1,46 +1,43 @@
-- name: Install nodejs and npm
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
+tasks:
+- name: Download NVM install script
+  get_url:
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh
+    dest: "/tmp/install_nvm.sh"
+    mode: '0755'
   tags:
     - install
     - node
+    - nvm
 
-- name: npmjs prefix
-  shell: mkdir -p ~/.local/.npm-global
-  tags:
-  - install
-  - node
-
-- name: add npmjs to path
-  shell: PATH=~/.local/.npm-global/bin:$PATH
-  tags:
-  - install
-  - node
-
-- name: npmjs global settings
-  shell: npm config set prefix '~/.local/.npm-global'
-  tags:
-  - install
-  - node
-
-- name: npmjs global settings export path in case I don't have dotfiles installed
-  shell: export PATH=~/.local/.npm-global/bin:$PATH
-  tags:
-  - install
-  - node
-  - npm-path
-
-- name: Install N
-  npm:
-    name: n
-    global: yes
+- name: Install NVM
+  shell: bash /tmp/install_nvm.sh
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
   tags:
     - install
     - node
+    - nvm
 
-- name: Install correct version of Node
-  shell: n latest
+- name: Install Node.js LTS version using NVM
+  shell: >
+    . {{ ansible_env.HOME }}/.nvm/nvm.sh &&
+    nvm install --lts &&
+    nvm use --lts &&
+    nvm alias default 'lts/*'
+  args:
+    executable: /bin/bash
   tags:
     - install
     - node
+    - nvm
+
+- name: Set NPM global prefix and add to PATH
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      export NPM_CONFIG_PREFIX=~/.npm-global
+      export PATH=~/.npm-global/bin:$PATH
+  tags:
+    - install
+    - node
+    - npm-path
