@@ -1,0 +1,53 @@
+- name: Install MySQL Server
+    apt:
+      name: mysql-server
+      state: present
+    tags:
+      - install
+      - mysql
+
+- name: Ensure MySQL Service is running
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+  tags:
+    - mysql
+
+- name: Set root password and remove remote root access
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: root
+    password: "{{ mysql_root_password }}"
+    host: "{{ item }}"
+    state: present
+    priv: '*.*:ALL,GRANT'
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  tags:
+    - mysql
+  when: mysql_root_password is defined
+
+- name: Remove anonymous user accounts
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: ''
+    host_all: yes
+    state: absent
+  tags:
+    - mysql
+  when: mysql_root_password is defined
+
+- name: Ensure the MySQL database is present (example)
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: example_db
+    state: present
+  tags:
+    - mysql
+  when: mysql_root_password is defined

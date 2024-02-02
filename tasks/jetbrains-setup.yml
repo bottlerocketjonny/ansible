@@ -1,0 +1,35 @@
+- name: Download JetBrains Toolbox tarball
+  get_url:
+    url: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-1.21.9712.tar.gz"
+    dest: "/tmp/jetbrains-toolbox.tar.gz"
+    mode: '0644'
+  tags:
+    - install
+    - jetbrains-toolbox
+
+- name: Create JetBrains Toolbox directory
+  file:
+    path: "/opt/jetbrains-toolbox"
+    state: directory
+  tags:
+    - install
+    - jetbrains-toolbox
+
+- name: Extract JetBrains Toolbox tarball
+  ansible.builtin.unarchive:
+    src: "/tmp/jetbrains-toolbox.tar.gz"
+    dest: "/opt/jetbrains-toolbox"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+  tags:
+    - install
+    - jetbrains-toolbox
+
+- name: Create symlink for JetBrains Toolbox binary
+  file:
+    src: "/opt/jetbrains-toolbox/jetbrains-toolbox"
+    dest: "/usr/local/bin/jetbrains-toolbox"
+    state: link
+  tags:
+    - install
+    - jetbrains-toolbox

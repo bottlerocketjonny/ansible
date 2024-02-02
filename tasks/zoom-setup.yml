@@ -1,0 +1,24 @@
+- name: Download Zoom
+  get_url:
+    url: https://zoom.us/client/latest/zoom_amd64.deb
+    dest: /tmp/zoom.deb
+  tags:
+    - install
+    - zoom
+
+- name: Remove Any previous Zoom installations
+  become: true
+  apt:
+    name: zoom
+    state: absent
+  tags:
+    - install
+    - zoom
+
+- name: Install Zoom .deb package
+  become: true
+  apt:
+    deb: /tmp/zoom.deb
+  tags:
+    - install
+    - zoom
