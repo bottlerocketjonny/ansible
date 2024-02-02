@@ -1,4 +1,4 @@
-FROM ubuntu:latest AS base
+FROM linuxmintd/mint21.2-amd64 AS base
 
 WORKDIR /usr/local/bin
 

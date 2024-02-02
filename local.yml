@@ -18,6 +18,9 @@
     - include: tasks/git-setup.yml
     - include: tasks/core-setup.yml
     - include: tasks/java-setup.yml
+    - include: tasks/node-setup.yml
+    - include: tasks/mysql-setup.yml
+    - include: tasks/keepass-setup.yml
     - include: tasks/slack-setup.yml
     - include: tasks/brave.yml
     - include: tasks/nvim-setup.yml
