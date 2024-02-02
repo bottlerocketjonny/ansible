@@ -1,17 +1,6 @@
-- name: Add KeePassXC PPA (Ubuntu)
-  apt_repository:
-    repo: ppa:phoerious/keepassxc
-    state: present
-  when: ansible_distribution == 'Ubuntu'
-  tags:
-    - install
-    - keepassxc
-
-- name: Install KeePassXC
+- name: Install KeePassXC from Ubuntu repository
+  become: true
   apt:
     name: keepassxc
     state: present
     update_cache: yes
-  tags:
-    - install
-    - keepassxc
