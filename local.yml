@@ -22,6 +22,9 @@
     - include: tasks/mysql-setup.yml
     - include: tasks/keepass-setup.yml
     - include: tasks/slack-setup.yml
+    - include: tasks/zoom-setup.yml
+    - include: tasks/jetbrains-setup.yml
     - include: tasks/brave.yml
     - include: tasks/nvim-setup.yml
     - include: tasks/dotfiles.yml
+    - include: tasks/zsh-setup.yml
